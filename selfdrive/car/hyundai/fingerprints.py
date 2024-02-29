@@ -1699,6 +1699,26 @@ FW_VERSIONS = {
       b'\xf1\x00GL3_ RDR -----      1.00 1.02 99110-L8000         ',
     ],
   },
+  CAR.KONA_2022: {
+    (Ecu.abs, 0x7D1, None): [
+      b'\xf1\x8758900-J9300 \xf1\x816V5RAS00038.ELF',
+    ],
+    (Ecu.fwdCamera, 0x7C4, None): [
+      b'\xf1\x00OSP LKA  AT USA LHD 1.00 1.04 99211-J9200 904',
+    ],
+    (Ecu.eps, 0x7D4, None): [
+      b'\xf1\x00OSP MDPS C 1.00 1.04 56310/J9291 4OPCC104',
+    ],
+    (Ecu.fwdRadar, 0x7D0, None): [
+      b'\xf1\x00YB__ FCA -----      1.00 1.01 99110-J9000      \x00\x00\x00',
+    ],
+    (Ecu.engine, 0x7E0, None): [
+      b'\xf1\x87391212MAL0',
+    ],
+    (Ecu.transmission, 0x7e1, None): [
+      b'\xf1\x00T01G00BL  T01I00A1  DOS2T16X4XI00NS0\x99L\xeeq',
+    ],
+  },
   CAR.STARIA_4TH_GEN: {
     (Ecu.fwdCamera, 0x7c4, None): [
       b'\xf1\x00US4 MFC  AT KOR LHD 1.00 1.06 99211-CG000 230524',
