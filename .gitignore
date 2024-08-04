@@ -15,6 +15,7 @@ a.out
 .hypothesis
 
 /docs_site/
+docs/site/
 
 *.dylib
 *.DSYM
@@ -105,3 +106,6 @@ Pipfile
 # Ignore all local history of files
 .history
 .ionide
+
+# Local Netlify folder
+.netlify
