@@ -220,6 +220,21 @@ def split_name(name: str) -> tuple[str, str, str]:
   return make, model, years
 
 
+# prevent squashing into too thin column
+def format_with_nbsp(text):
+    words = text.split()
+    result = words[0]
+    cur_chunk_len = len(result)
+    for word in words[1:]:
+      cur_chunk_len += len(word)
+      if cur_chunk_len >= 35:
+        result += ' ' + word
+        cur_chunk_len = len(word)
+      else:
+        result += '&nbsp;' + word
+    return result
+
+
 @dataclass
 class CarDocs:
   # make + model + model years
@@ -297,7 +312,7 @@ class CarDocs:
     self.row: dict[Enum, str | Star] = {
       Column.MAKE: self.make,
       Column.MODEL: self.model,
-      Column.PACKAGE: self.package,
+      Column.PACKAGE: format_with_nbsp(self.package),
       Column.LONGITUDINAL: op_long,
       Column.FSR_LONGITUDINAL: f"{max(self.min_enable_speed * CV.MS_TO_MPH, 0):.0f} mph",
       Column.FSR_STEERING: f"{max(self.min_steer_speed * CV.MS_TO_MPH, 0):.0f} mph",
@@ -315,7 +330,7 @@ class CarDocs:
     self.all_footnotes = all_footnotes
     self.detail_sentence = self.get_detail_sentence(CP)
 
-    self.row[Column.DETAIL_SENTENCE] = f'<details><summary>Detail</summary><sub>{self.detail_sentence}</sub></details>'
+    self.row[Column.DETAIL_SENTENCE] = f'<details><summary>Detail</summary><sub>{format_with_nbsp(self.detail_sentence)}</sub></details>'
 
     return self
 
