@@ -22,6 +22,7 @@ class Column(Enum):
   AUTO_RESUME = "Resume from stop"
   HARDWARE = "Hardware Needed"
   VIDEO = "Video"
+  DETAIL_SENTENCE = "Detail"
 
 
 class Star(Enum):
@@ -313,6 +314,8 @@ class CarDocs:
 
     self.all_footnotes = all_footnotes
     self.detail_sentence = self.get_detail_sentence(CP)
+
+    self.row[Column.DETAIL_SENTENCE] = f'<details><summary>Detail</summary><sub>{self.detail_sentence}</sub></details>'
 
     return self
 
