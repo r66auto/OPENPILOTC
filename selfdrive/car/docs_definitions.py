@@ -312,7 +312,7 @@ class CarDocs:
     self.row: dict[Enum, str | Star] = {
       Column.MAKE: self.make,
       Column.MODEL: self.model,
-      Column.PACKAGE: format_with_nbsp(self.package),
+      Column.PACKAGE: self.package,
       Column.LONGITUDINAL: op_long,
       Column.FSR_LONGITUDINAL: f"{max(self.min_enable_speed * CV.MS_TO_MPH, 0):.0f} mph",
       Column.FSR_STEERING: f"{max(self.min_steer_speed * CV.MS_TO_MPH, 0):.0f} mph",
