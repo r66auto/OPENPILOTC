@@ -17,6 +17,10 @@ class CarState(CarStateBase):
     if CP.transmissionType == TransmissionType.automatic:
       self.shifter_values = can_define.dv["PowertrainData_10"]["TrnRng_D_Rq"]
 
+    if CP.flags & FordFlags.CANFD:
+      self.cluster_min_speed = CV.KPH_TO_MS * 1.5
+      self.cluster_speed_hyst_gap = CV.KPH_TO_MS / 2
+
     self.prev_distance_button = 0
     self.distance_button = 0
 
@@ -32,6 +36,10 @@ class CarState(CarStateBase):
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
     ret.yawRate = cp.vl["Yaw_Data_FD1"]["VehYaw_W_Actl"]
     ret.standstill = cp.vl["DesiredTorqBrk"]["VehStop_D_Stat"] == 1
+
+    if self.CP.flags & FordFlags.CANFD:
+      ret.vEgoCluster = ((cp.vl["Cluster_Info_3_FD1"]["DISPLAY_SPEED_SCALING"] / 100) * cp.vl["EngVehicleSpThrottle2"]["Veh_V_ActlEng"] \
+        + cp.vl["Cluster_Info_3_FD1"]["DISPLAY_SPEED_OFFSET"]) * CV.KPH_TO_MS
 
     # gas pedal
     ret.gas = cp.vl["EngVehicleSpThrottle"]["ApedPos_Pc_ActlArb"] / 100.
@@ -128,6 +136,8 @@ class CarState(CarStateBase):
 
     if CP.flags & FordFlags.CANFD:
       messages += [
+        ("Cluster_Info_3_FD1", 10),
+        ("EngVehicleSpThrottle2", 50),
         ("Lane_Assist_Data3_FD1", 33),
       ]
     else:
