@@ -12,6 +12,15 @@ from threading import local
 from collections import OrderedDict
 from contextlib import contextmanager
 
+LEVELS = {
+  "DEBUG": 10,
+  "INFO": 20,
+  "WARNING": 30,
+  "IMPORTANT": 35,
+  "ERROR": 40,
+  "CRITICAL": 50,
+}
+
 LOG_TIMESTAMPS = "LOG_TIMESTAMPS" in os.environ
 
 def json_handler(obj):
@@ -153,6 +162,10 @@ class SwagLogger(logging.Logger):
   def bind_global(self, **kwargs):
     self.global_ctx.update(kwargs)
 
+  def important(self, msg, *args, **kwargs):
+    if self.isEnabledFor(LEVELS["IMPORTANT"]):
+      self._log(LEVELS["IMPORTANT"], msg, args, **kwargs)
+
   def event(self, event, *args, **kwargs):
     evt = NiceOrderedDict()
     evt['event'] = event
@@ -161,6 +174,8 @@ class SwagLogger(logging.Logger):
     evt.update(kwargs)
     if 'error' in kwargs:
       self.error(evt)
+    elif 'important' in kwargs:
+      self.important(evt)
     elif 'debug' in kwargs:
       self.debug(evt)
     else:
